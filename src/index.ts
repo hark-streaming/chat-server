@@ -66,7 +66,7 @@ io.on("connection", (socket: Socket) => {
         const user = getUser(socket.id);
 
         if (user != null) {
-            io.to(user.room).emit('message', `${user?.username}: ${msg}`);
+            io.to(user.room).emit('chatMessage', `${user?.username}: ${msg}`);
             console.log(`[${user?.room}] ${user?.username}: ${msg}`);
         }
 
