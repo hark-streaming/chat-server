@@ -85,7 +85,7 @@
         joinform.addEventListener('submit', (e) => {
             e.preventDefault();
             console.log("agaga");
-            const socket = io("http://localhost:4000/", {
+            const socket = io("http://produ-publi-1umq15gpn246p-1858097073.us-east-2.elb.amazonaws.com/"/*"http://localhost:4000/"*/, {
                 auth: {
                     token: "coolsecret"
                 }
