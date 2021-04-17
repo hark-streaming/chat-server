@@ -57,10 +57,12 @@ io.on("connection", (socket) => {
     // User sends a message
     socket.on('chatMessage', msg => {
         const user = users_1.getUser(socket.id);
+        // Emit the message to the room
         if (user != null) {
             io.to(user.room).emit('chatMessage', `${user === null || user === void 0 ? void 0 : user.username}: ${msg}`);
             console.log(`[${user === null || user === void 0 ? void 0 : user.room}] ${user === null || user === void 0 ? void 0 : user.username}: ${msg}`);
         }
+        // Store the message
     });
 });
 // temporary routes for testing
