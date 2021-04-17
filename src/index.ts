@@ -12,8 +12,10 @@ const httpServer = createServer(app);
 const io = new Server(httpServer, {
     cors: {
         //origin: ["https://demo.hark.tv", "http://127.0.0.1", "http://localhost"],
-        origin: "*"
-    }
+        origin: "http://localhost:3000",
+        credentials: true,
+    },
+    allowEIO3: true
 });
 
 const PORT = process.env.PORT || 4000;
@@ -33,8 +35,9 @@ app.disable("x-powered-by");
 
 // authentication middleware
 io.use((socket: Socket, next) => {
-    const token = socket.handshake.auth.token;
-    if (token == "coolsecret") {
+    //const token = socket.handshake.auth.token;
+    const { auth } = socket.handshake.headers;
+    if (auth == "coolsecret") {
         next();
     } else {
         next(new Error("invalid auth"));

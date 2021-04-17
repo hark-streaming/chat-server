@@ -12,8 +12,10 @@ const httpServer = http_1.createServer(app);
 const io = new socket_io_1.Server(httpServer, {
     cors: {
         //origin: ["https://demo.hark.tv", "http://127.0.0.1", "http://localhost"],
-        origin: "*"
-    }
+        origin: "http://localhost:3000",
+        credentials: true,
+    },
+    allowEIO3: true
 });
 const PORT = process.env.PORT || 4000;
 // security
@@ -29,8 +31,9 @@ app.disable("x-powered-by");
 // app.use(cors(corsOptions));
 // authentication middleware
 io.use((socket, next) => {
-    const token = socket.handshake.auth.token;
-    if (token == "coolsecret") {
+    //const token = socket.handshake.auth.token;
+    const { auth } = socket.handshake.headers;
+    if (auth == "coolsecret") {
         next();
     }
     else {
