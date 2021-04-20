@@ -12,7 +12,7 @@ const httpServer = http_1.createServer(app);
 const io = new socket_io_1.Server(httpServer, {
     cors: {
         //origin: ["https://demo.hark.tv", "http://127.0.0.1", "http://localhost"],
-        origin: ["http://localhost:3000", "http://127.0.0.1:3000", "https://*.hark.tv"],
+        origin: ["http://localhost:3000", "http://127.0.0.1:3000", "https://alpha.hark.tv"],
         credentials: true,
     },
     allowEIO3: true
