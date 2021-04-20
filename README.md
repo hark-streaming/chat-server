@@ -29,3 +29,6 @@ name it whatever (stack name and service name)
 set containerport to 4000
 
 Once it has finished creating, the ExternalUrl is under the "Outputs" tab
+
+# update a stack
+go into the stack and change the container image name to whatever the new tagged one is
