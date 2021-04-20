@@ -72,7 +72,22 @@ io.on("connection", (socket) => {
 app.get("/", (req, res) => res.send("ok"));
 app.get("/aga", (req, res) => res.send("agoo"));
 app.get("/users/all", (req, res) => {
-    res.send(users_1.getAllUsers());
+    console.log("called");
+    const users = users_1.getAllUsers();
+    const rooms = users.map((user) => {
+        return user.room;
+    });
+    let data = [];
+    rooms.forEach((room) => {
+        data.push({
+            channel: room,
+            viewCount: users_1.getRoomUsers(room).length,
+        });
+    });
+    res.status(200).send({
+        success: true,
+        data: data,
+    });
 });
 app.get("/users/:room", (req, res) => {
     res.send(users_1.getRoomUsers(req.params.room));
