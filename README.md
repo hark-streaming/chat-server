@@ -9,9 +9,9 @@ this how:
 
 `docker build -t chat-server .`
 
-`docker tag chat-server:latest 598117396923.dkr.ecr.us-east-2.amazonaws.com/hark-dev-chat-server:latest`
+`docker tag chat-server:latest 598117396923.dkr.ecr.us-east-2.amazonaws.com/hark-dev-chat-server:VERSION`
 
-`docker push 598117396923.dkr.ecr.us-east-2.amazonaws.com/hark-dev-chat-server:latest`
+`docker push 598117396923.dkr.ecr.us-east-2.amazonaws.com/hark-dev-chat-server:VERSION`
 
 # deploying to aws cloudfront
 *make sure you are authenticated with the aws cli*
@@ -31,4 +31,4 @@ set containerport to 4000
 Once it has finished creating, the ExternalUrl is under the "Outputs" tab
 
 # update a stack
-go into the stack and change the container image name to whatever the new tagged one is
+go into the stack and change the container image name to whatever the new tagged VERSION is
