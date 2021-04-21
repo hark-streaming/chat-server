@@ -89,9 +89,9 @@ app.get("/aga", (req: express.Request, res: express.Response) => res.send("agoo"
 app.get("/users/all", (req: express.Request, res: express.Response) => {
     console.log("called");
     const users = getAllUsers();
-    const rooms = users.map((user) => {
+    const rooms = new Set(users.map((user) => {
         return user.room;
-    });
+    }));
 
     let data: Array<Object> = [];
     rooms.forEach((room) => {
