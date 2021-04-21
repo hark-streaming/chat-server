@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getAllUsers = exports.getRoomUsers = exports.getUser = exports.removeUser = exports.addUser = void 0;
+exports.getAllUsers = exports.getRoomUsers = exports.getUserByName = exports.getUserBySocketId = exports.removeUser = exports.addUser = void 0;
 // Global array of all connected users
 const users = [];
 /**
@@ -34,10 +34,14 @@ exports.removeUser = removeUser;
  * @param socketid id of the socketio socket of the user
  * @returns the user as {socketid, username, room}
  */
-function getUser(socketid) {
+function getUserBySocketId(socketid) {
     return users.find(user => user.socketid === socketid);
 }
-exports.getUser = getUser;
+exports.getUserBySocketId = getUserBySocketId;
+function getUserByName(username) {
+    return users.find(user => user.username === username);
+}
+exports.getUserByName = getUserByName;
 /**
  * Get all the users that are in a room
  * @param room name of the room

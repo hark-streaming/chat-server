@@ -45,6 +45,12 @@ io.on("connection", (socket) => {
     console.log("new connection");
     // User joins room
     socket.on("joinRoom", (username, room) => {
+        // if username is already connected to that room, dont let duplicate join
+        // const exists = getUserByName(username)
+        // if(exists && exists.room === room){
+        //     console.log("dup");
+        //     socket.disconnect();
+        // }
         // add user to the room
         const user = users_1.addUser(socket.id, username, room);
         socket.join(user.room);
@@ -59,7 +65,7 @@ io.on("connection", (socket) => {
     });
     // User sends a message
     socket.on('chatMessage', msg => {
-        const user = users_1.getUser(socket.id);
+        const user = users_1.getUserBySocketId(socket.id);
         // Emit the message to the room
         if (user != null) {
             io.to(user.room).emit('chatMessage', `${user === null || user === void 0 ? void 0 : user.username}: ${msg}`);
@@ -72,13 +78,13 @@ io.on("connection", (socket) => {
 app.get("/", (req, res) => res.send("ok"));
 app.get("/aga", (req, res) => res.send("agoo"));
 app.get("/users/all", (req, res) => {
-    console.log("called");
     const users = users_1.getAllUsers();
     const rooms = users.map((user) => {
         return user.room;
     });
+    const roomSet = new Set(rooms);
     let data = [];
-    rooms.forEach((room) => {
+    roomSet.forEach((room) => {
         data.push({
             channel: room,
             viewCount: users_1.getRoomUsers(room).length,

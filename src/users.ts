@@ -34,8 +34,12 @@ function removeUser(socketid: string) {
  * @param socketid id of the socketio socket of the user
  * @returns the user as {socketid, username, room}
  */
-function getUser(socketid: string) {
+function getUserBySocketId(socketid: string) {
     return users.find(user => user.socketid === socketid);
+}
+
+function getUserByName(username: string){
+    return users.find(user => user.username === username);
 }
 
 /**
@@ -57,7 +61,8 @@ function getAllUsers() {
 export {
     addUser,
     removeUser,
-    getUser,
+    getUserBySocketId,
+    getUserByName,
     getRoomUsers,
     getAllUsers
 }

@@ -4,7 +4,7 @@ import * as express from "express";
 //import * as cors from 'cors';
 import { createServer } from "http";
 import { Server, Socket } from "socket.io";
-import { addUser, removeUser, getUser, getRoomUsers, getAllUsers } from "./users";
+import { addUser, removeUser, getUserBySocketId, getRoomUsers, getAllUsers, /*getUserByName*/ } from "./users";
 
 // initialize express, socketio
 const app = express();
@@ -50,6 +50,13 @@ io.on("connection", (socket: Socket) => {
 
     // User joins room
     socket.on("joinRoom", (username: string, room: string) => {
+        // if username is already connected to that room, dont let duplicate join
+        // const exists = getUserByName(username)
+        // if(exists && exists.room === room){
+        //     console.log("dup");
+        //     socket.disconnect();
+        // }
+
         // add user to the room
         const user = addUser(socket.id, username, room);
         socket.join(user.room);
@@ -66,7 +73,7 @@ io.on("connection", (socket: Socket) => {
 
     // User sends a message
     socket.on('chatMessage', msg => {
-        const user = getUser(socket.id);
+        const user = getUserBySocketId(socket.id);
 
         // Emit the message to the room
         if (user != null) {
@@ -87,14 +94,14 @@ app.get("/", (req: express.Request, res: express.Response) => res.send("ok"));
 app.get("/aga", (req: express.Request, res: express.Response) => res.send("agoo"));
 
 app.get("/users/all", (req: express.Request, res: express.Response) => {
-    console.log("called");
     const users = getAllUsers();
-    const rooms = new Set(users.map((user) => {
+    const rooms = users.map((user) => {
         return user.room;
-    }));
+    });
 
+    const roomSet = new Set(rooms);
     let data: Array<Object> = [];
-    rooms.forEach((room) => {
+    roomSet.forEach((room) => {
         data.push({
             channel: room,
             viewCount: getRoomUsers(room).length,
