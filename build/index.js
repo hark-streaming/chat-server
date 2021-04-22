@@ -67,7 +67,7 @@ io.on("connection", (socket) => {
     socket.on('chatMessage', msg => {
         const user = users_1.getUserBySocketId(socket.id);
         // Emit the message to the room
-        if (user != null) {
+        if ((user === null || user === void 0 ? void 0 : user.username) != null) {
             io.to(user.room).emit('chatMessage', `${user === null || user === void 0 ? void 0 : user.username}: ${msg}`);
             console.log(`[${user === null || user === void 0 ? void 0 : user.room}] ${user === null || user === void 0 ? void 0 : user.username}: ${msg}`);
         }
@@ -94,6 +94,12 @@ app.get("/users/all", (req, res) => {
         success: true,
         data: data,
     });
+});
+// get just the raw number of users in the room
+app.get("/viewers/:room", (req, res) => {
+    const users = users_1.getRoomUsers(req.params.room);
+    res.status(200).send({ viewers: users.length });
+    //res.send(getRoomUsers(req.params.room));
 });
 app.get("/users/:room", (req, res) => {
     res.send(users_1.getRoomUsers(req.params.room));

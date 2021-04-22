@@ -76,7 +76,7 @@ io.on("connection", (socket: Socket) => {
         const user = getUserBySocketId(socket.id);
 
         // Emit the message to the room
-        if (user != null) {
+        if (user?.username != null) {
             io.to(user.room).emit('chatMessage', `${user?.username}: ${msg}`);
             console.log(`[${user?.room}] ${user?.username}: ${msg}`);
         }
@@ -112,6 +112,13 @@ app.get("/users/all", (req: express.Request, res: express.Response) => {
         success: true,
         data: data,
     });
+});
+
+// get just the raw number of users in the room
+app.get("/viewers/:room", (req: express.Request, res: express.Response) => {
+    const users = getRoomUsers(req.params.room);
+    res.status(200).send({viewers: users.length});
+    //res.send(getRoomUsers(req.params.room));
 });
 
 app.get("/users/:room", (req: express.Request, res: express.Response) => {
