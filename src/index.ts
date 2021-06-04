@@ -11,8 +11,8 @@ const app = express();
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
     cors: {
-        //origin: ["https://demo.hark.tv", "http://127.0.0.1", "http://localhost"],
-        origin: ["http://localhost:3000", "http://127.0.0.1:3000", "https://alpha.hark.tv"],
+        origin: ["http://localhost:3000", "http://127.0.0.1:3000", "http://localhost:5500", "http://127.0.0.1:5500", "https://alpha.hark.tv"],
+        //origin:["*"],
         credentials: true,
     },
     allowEIO3: true
@@ -36,10 +36,13 @@ app.disable("x-powered-by");
 // authentication middleware
 io.use((socket: Socket, next) => {
     //const token = socket.handshake.auth.token;
+    // we are doing it in the header since our frontend can only send data in that format currently
     const { auth } = socket.handshake.headers;
     if (auth == "coolsecret") {
+        console.log("good");
         next();
     } else {
+        console.log("bad");
         next(new Error("invalid auth"));
     }
 });

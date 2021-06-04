@@ -11,8 +11,8 @@ const app = express();
 const httpServer = http_1.createServer(app);
 const io = new socket_io_1.Server(httpServer, {
     cors: {
-        //origin: ["https://demo.hark.tv", "http://127.0.0.1", "http://localhost"],
-        origin: ["http://localhost:3000", "http://127.0.0.1:3000", "https://alpha.hark.tv"],
+        origin: ["http://localhost:3000", "http://127.0.0.1:3000", "http://localhost:5500", "http://127.0.0.1:5500", "https://alpha.hark.tv"],
+        //origin:["*"],
         credentials: true,
     },
     allowEIO3: true
@@ -34,9 +34,11 @@ io.use((socket, next) => {
     //const token = socket.handshake.auth.token;
     const { auth } = socket.handshake.headers;
     if (auth == "coolsecret") {
+        console.log("good");
         next();
     }
     else {
+        console.log("bad");
         next(new Error("invalid auth"));
     }
 });

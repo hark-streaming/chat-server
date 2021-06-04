@@ -85,11 +85,18 @@
         joinform.addEventListener('submit', (e) => {
             e.preventDefault();
             console.log("agaga");
-            const socket = io("http://produ-publi-1umq15gpn246p-1858097073.us-east-2.elb.amazonaws.com/"/*"http://localhost:4000/"*/, {
-                auth: {
-                    token: "coolsecret"
-                }
-            });
+            const socket = io(
+                /*"http://produ-publi-1umq15gpn246p-1858097073.us-east-2.elb.amazonaws.com/"*/
+                "http://localhost:4000/",
+                {
+                    // auth: {
+                    //     token: "coolsecret"
+                    // },
+                    extraHeaders: { // mimics our current frontend code
+                        auth: "coolsecret",
+                    },
+
+                });
             socket.on('connect', () => {
                 socket.emit('joinRoom', username.value, room.value);
             });
